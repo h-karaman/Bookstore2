@@ -13,9 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+
+
+import os
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("book/", include("book.urls")),#book sayfası için url tanıtıldı
+    path("home/", include("home.urls")),#anasayfa için url 
+    path("", include("home.urls")),#herhangi bir şey yazılmazsa home a gidecektir.
+    path('admin/', admin.site.urls), #admin için url tanitildi
 ]
+
+
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+#ilk önce proje ana dosyasında uploads klasörü oluşturulmalı.Sonra
+#( Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) os.import altına eklenmeli.

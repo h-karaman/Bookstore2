@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'book.apps.BookConfig',#book app i buraya eklendi.
+    'home.apps.HomeConfig',#anasayfa app i buraya eklendi.otomatik eklemiyor.
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,7 +78,7 @@ WSGI_APPLICATION = 'Bookstore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bitirmedeneme',
+        'NAME': 'bookstore',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
