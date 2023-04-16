@@ -17,7 +17,9 @@ Including another URLconf
 
 
 import os
+from django.conf import settings
 from django.contrib import admin
+from django.conf.urls.static import static
 from django.urls import include, path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,7 +30,10 @@ urlpatterns = [
     path("home/", include("home.urls")),#anasayfa için url 
     path("", include("home.urls")),#herhangi bir şey yazılmazsa home a gidecektir.
     path('admin/', admin.site.urls), #admin için url tanitildi
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG: # new
+   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 MEDIA_URL = '/uploads/'
@@ -36,3 +41,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 #ilk önce proje ana dosyasında uploads klasörü oluşturulmalı.Sonra
 #( Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) os.import altına eklenmeli.
+
+

@@ -1,9 +1,9 @@
 {% load static %}
 <meta charset="utf-8">
-    <title>EShopper - Bootstrap Shop Template</title>
+    <title> {% block title %} Home Page {% endblock %} </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta content="{% block keywords %} Home Keywords {% endblock %}" name="keywords">
+    <meta content="{% block description %} Home Keywords {% endblock %}" name="description">
 
     <!-- Favicon -->
     <link href="{%static 'img/favicon.ico'%}" rel="icon">
@@ -21,7 +21,9 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{%static 'css/style.css'%}" rel="stylesheet">
 
-    
+    {% block head %} {% endblock %}
+
+<body>    
 {% include 'header.html' %} {% comment "" %}#değiştirmek istemiyorsak{% endcomment %}
 {% block sidebar %} {% endblock %} {% comment "" %}#değiştirmek istiyorsak block tanımlarız{% endcomment %}
 {% block slider %} {% endblock %}

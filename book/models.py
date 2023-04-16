@@ -1,5 +1,8 @@
 
+from django.contrib.auth.models import User
+from tkinter import CASCADE
 from django.db import models
+from django.utils.safestring import mark_safe #resimleri admnde göstermek için
 
 # Create your models here.
 
@@ -24,7 +27,7 @@ class BookCategory(models.Model):
      def __str__(self):
         return self.title
    
-   #kitap için databse tanımlandı
+   #kitap için database tanımlandı
 class Books(models.Model):
     STATUS = (
         ('True', 'True'),
@@ -33,12 +36,12 @@ class Books(models.Model):
 
     VARIANTS = (
         ('None', 'None'),
-        ('Size', 'Size'),
-        ('Color', 'Color'),
-        ('Size-Color', 'Size-Color'),
+        ('Karton Kapak', 'Karton Kapak'),
+        ('Kuşe Kapak', 'Kuşe Kapak'),
+        
 
     )
-    category = models.ForeignKey(BookCategory, on_delete=models.CASCADE) #many to one relation with Category
+    bookcategory = models.ForeignKey(BookCategory, on_delete=models.CASCADE) #many to one relation with Category
     name =models.CharField(max_length=100,blank=False)
     title = models.CharField(max_length=150,blank=True)
     publisher=models.CharField(max_length=100,blank=False)
@@ -47,17 +50,62 @@ class Books(models.Model):
     num_of_pages = models.IntegerField(blank=True, null=True)
     keywords = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
-    #cover_image =models.ImageField(upload_to='images/',null=False)
-    image=models.ImageField(upload_to='images/',null=False)
     price = models.DecimalField(max_digits=12, decimal_places=2,default=0)
     quantity=models.IntegerField(default=0)
     minquantity=models.IntegerField(default=3)
-    variant=models.CharField(max_length=10,choices=VARIANTS, default='None')
-    detail=models.TextField()
+    variant=models.CharField(max_length=50,choices=VARIANTS, default='None')
+    detail=models.TextField(max_length=1500)
     slug = models.SlugField(null=False, unique=True)
     status=models.CharField(max_length=10,choices=STATUS)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    translated_by=models.CharField(blank=True,max_length=50)
+    availability =models.BooleanField(default=True)
+    image=models.ImageField(upload_to='images/',null=False)
+    #cover_image =models.ImageField(upload_to='images/',null=False)
     
     def __str__(self):
-        return self.title   
+        return str (self.name) 
+    
+    def image_tag(self):
+        return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
+    image_tag.short_description = 'Resim'
+    
+class Resimler(models.Model) :
+    books= models.ForeignKey(Books,on_delete=models.CASCADE)
+    baslik = models.CharField(max_length=100,blank=True)  
+    # resim = models.ImageField(blank=True,upload_to='images/')
+    image=models.ImageField(blank=True,upload_to='images/',null=True)
+    
+    def __str__(self):
+        return self.baslik
+    
+    def image_tag(self):
+        return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
+    image_tag.short_description = 'Resim'
+    
+      
+    
+    
+
+class Yorumlar(models.Model) :
+    STATUS=(
+        ('New','Yeni'),
+        ('False','False'),
+        ('True','True'),
+        
+    )
+    user= models.ForeignKey(User,on_delete=models.CASCADE)
+    books= models.ForeignKey(Books,on_delete=models.CASCADE)
+    konu= models.CharField(max_length=50, blank=True)
+    yorum= models.CharField(max_length=300,blank=True)
+    yorum_puani= models.IntegerField(default=1)
+    durum =models.CharField(max_length=10,choices=STATUS, default='Yeni')
+    ip = models.CharField(max_length=20, blank=True)
+    olusturulma_zamani=models.DateTimeField(auto_now_add=True)
+    guncellenme_zamani=models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.konu
+    
+       
