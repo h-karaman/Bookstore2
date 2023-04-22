@@ -3,10 +3,17 @@ from django.contrib.auth.models import User
 from tkinter import CASCADE
 from django.db import models
 from django.utils.safestring import mark_safe #resimleri admnde göstermek için
+from django.db.models import Avg, Count
+from django.forms import ModelForm
+from django.urls import reverse
+
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
+
 
 # Create your models here.
 
-class BookCategory(models.Model): 
+class Category(MPTTModel): 
      STATUS = (
           ('True','Evet'),
           ('False','Hayır'),
@@ -19,13 +26,29 @@ class BookCategory(models.Model):
      slug= models.SlugField()
      #admin sayfasında yükleme yapmak için modül oluşturma
      image=models.ImageField(blank=True,upload_to='images/')
-     parent= models.ForeignKey('self', related_name = 'children',blank=True,null=True, on_delete=models.CASCADE)
+     parent= TreeForeignKey('self', related_name = 'children',blank=True,null=True, on_delete=models.CASCADE)
      create_at = models.DateField(auto_now_add=True)
      update_at = models.DateField(auto_now=True)
-     
+     lft=models.IntegerField(blank=True, null=True)
+     rght=models.IntegerField(blank=True, null=True)
      #fonksiyon tanımlandıktan sonra title döndürecek.
      def __str__(self):
         return self.title
+    
+     class MPTTMeta:
+        order_insertion_by = ['title']
+
+     def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})
+
+     def __str__(self):                           # __str__ method elaborated later in
+        full_path = [self.title]                  # post.  use __unicode__ in place of
+        k = self.parent
+        while k is not None:
+            full_path.append(k.title)
+            k = k.parent
+        return ' / '.join(full_path[::-1])
+   
    
    #kitap için database tanımlandı
 class Books(models.Model):
@@ -41,7 +64,7 @@ class Books(models.Model):
         
 
     )
-    bookcategory = models.ForeignKey(BookCategory, on_delete=models.CASCADE) #many to one relation with Category
+    category = models.ForeignKey(Category, on_delete=models.CASCADE) #many to one relation with Category
     name =models.CharField(max_length=100,blank=False)
     title = models.CharField(max_length=150,blank=True)
     publisher=models.CharField(max_length=100,blank=False)
