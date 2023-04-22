@@ -22,14 +22,20 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import include, path
 
+from home import views
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 urlpatterns = [
     path("book/", include("book.urls")),#book sayfası için url tanıtıldı
     path("home/", include("home.urls")),#anasayfa için url 
+    path("hakkimizda", views.hakkimizda, name="hakkimizda"),
+    path("iletisim", views.iletisim, name="iletisim"),
     path("", include("home.urls")),#herhangi bir şey yazılmazsa home a gidecektir.
     path('admin/', admin.site.urls), #admin için url tanitildi
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG: # new

@@ -1,4 +1,4 @@
-
+from ckeditor_uploader.fields import  RichTextUploadingField
 from django.contrib.auth.models import User
 from tkinter import CASCADE
 from django.db import models
@@ -54,7 +54,8 @@ class Books(models.Model):
     quantity=models.IntegerField(default=0)
     minquantity=models.IntegerField(default=3)
     variant=models.CharField(max_length=50,choices=VARIANTS, default='None')
-    detail=models.TextField(max_length=1500)
+    ## detail = models.TextField()
+    detail=RichTextUploadingField()
     slug = models.SlugField(null=False, unique=True)
     status=models.CharField(max_length=10,choices=STATUS)
     created_at=models.DateTimeField(auto_now_add=True)
