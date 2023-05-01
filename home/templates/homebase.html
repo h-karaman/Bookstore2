@@ -1,31 +1,44 @@
 {% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
 <meta charset="utf-8">
-    <title> {% block title %} Home Page {% endblock %} </title>
+    <title>{% block title %} My Home Page {% endblock %}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="{% block keywords %} Home Keywords {% endblock %}" name="keywords">
-    <meta content="{% block description %} Home Keywords {% endblock %}" name="description">
+    <meta content="{% block description %} Home description  {% endblock %}" name="description">
 
     <!-- Favicon -->
-    <link href="{%static 'img/favicon.ico'%}" rel="icon">
+    <link href="{%static 'home/img/favicon.ico'%}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{%static 'lib/owlcarousel/assets/owl.carousel.min.css'%}" rel="stylesheet">
+    <link href="{%static 'home/lib/animate/animate.min.css'%}" rel="stylesheet">
+    <link href="{%static 'home/lib/owlcarousel/assets/owl.carousel.min.css'%}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{%static 'css/style.css'%}" rel="stylesheet">
+    <link href="{%static 'home/css/style.css'%}" rel="stylesheet">
 
-    {% block head %} {% endblock %}
+    {% block head %}
+        <!-- sayfanın title kısmının yanında gösterilen icon için. -->
+        <link rel='shortcut icon' type='image/x-icon' href='{{setting.icon.url}}' />
+    
+    {% endblock %}
+</head> 
 
-<body>    
+<body> 
+  
 {% include 'header.html' %} {% comment "" %}#değiştirmek istemiyorsak{% endcomment %}
-{% block sidebar %} {% endblock %} {% comment "" %}#değiştirmek istiyorsak block tanımlarız{% endcomment %}
+{% block sidebar %} {% endblock %}  {% comment "" %}#değiştirmek istiyorsak block tanımlarız{% endcomment %}
 {% block slider %} {% endblock %}
 {% block content %} {% endblock %}
 {% include 'footer.html' %}

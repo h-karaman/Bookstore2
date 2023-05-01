@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 
-
+import home
 import os
 from django.conf import settings
 from django.contrib import admin
@@ -35,6 +35,7 @@ urlpatterns = [
     path("", include("home.urls")),#herhangi bir şey yazılmazsa home a gidecektir.
     path('admin/', admin.site.urls), #admin için url tanitildi
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('category/<int:id>/<slug:slug>', views.category_books, name='category_books'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

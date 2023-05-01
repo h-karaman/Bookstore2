@@ -1,4 +1,4 @@
-from django.conf import Settings
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
@@ -45,3 +45,11 @@ def iletisim(request):
     form = IletisimFormu
     context={'setting':sayfaayarlari,'form':form  }
     return render(request, 'iletisim.html', context)
+ 
+def category_books(request,id,slug):
+     category=Category.objects.all()
+     #categorydata=Category.objects.get(pk=id)
+     books = Books.objects.filter(category_id=id) 
+     
+     context={'books': books,'category':category}
+     return render(request, 'category_books.html', context)
