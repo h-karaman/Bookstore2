@@ -1,0 +1,86 @@
+{% extends 'homebase.html' %}
+{% load i18n %}
+{% block title %} İletisim-{{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+
+{% block content %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
+                    <span class="breadcrumb-item active">İletişim</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+   
+    <!-- Contact Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">BİZİMLE İLETİŞİME GEÇİN</span></h2>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form bg-light p-30">
+                   {% if messages %}
+                    {% for message in messages %}
+                    <div id="success"></div>
+                    {% endfor %}
+                   {% endif %}
+                    <form name="IletisimFormu" method="post" id="IletisimFormu" novalidate="novalidate">
+                        {% csrf_token %}
+                        
+                        <div class="control-group">
+                            <input type="text" class="form-control" name="ad_soyad" placeholder="Ad-Soyad"
+                                required="required" data-validation-required-message="Ad Soyad girin!" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="email" class="form-control" name="email" placeholder="Mail Adresiniz"
+                                required="required" data-validation-required-message="Email adresinizi girin!" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" name="konu" placeholder="Mesaj Konusu"
+                                required="required" data-validation-required-message="Konu girin!" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <textarea class="form-control" rows="8" name="mesaj" placeholder="Mesajınız"
+                                required="required"
+                                data-validation-required-message="Mesajınızı yazın!"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary py-2 px-4" input type="submit" id="sendMessageButton">Mesajı 
+                                Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5 mb-5">
+                <div class="bg-light p-30 mb-30">
+                    <iframe style="width: 100%; height: 250px;"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d49995.721780206346!2d27.150417840099617!3d38.44764473833814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b97d1fa79aeb85%3A0xa921686c67f3b44e!2zQm9ybm92YSwgS8SxesSxbGF5LCAzNTAzMCBCb3Jub3ZhL8Swem1pcg!5e0!3m2!1str!2str!4v1683895891427!5m2!1str!2str"
+                    frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+                <div class="bg-light p-30 mb-3">
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ setting.adres }}</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ setting.email }}</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ setting.telefon }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+{% endblock %}
+
+
+
+

@@ -115,8 +115,8 @@ class Resimler(models.Model) :
 class Yorumlar(models.Model) :
     STATUS=(
         ('New','Yeni'),
-        ('False','False'),
-        ('True','True'),
+        ('False','Onaylanmadı'),
+        ('True','Onaylandı'),
         
     )
     user= models.ForeignKey(User,on_delete=models.CASCADE)
@@ -132,4 +132,7 @@ class Yorumlar(models.Model) :
     def __str__(self):
         return self.konu
     
-       
+class YorumFormu(ModelForm):
+    class Meta:
+        model = Yorumlar
+        fields = ['konu', 'yorum', 'yorum_puani']      

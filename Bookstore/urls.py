@@ -30,12 +30,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 urlpatterns = [
     path("book/", include("book.urls")),#book sayfası için url tanıtıldı
     path("home/", include("home.urls")),#anasayfa için url 
-    path("hakkimizda", views.hakkimizda, name="hakkimizda"),
     path("iletisim", views.iletisim, name="iletisim"),
     path("", include("home.urls")),#herhangi bir şey yazılmazsa home a gidecektir.
     path('admin/', admin.site.urls), #admin için url tanitildi
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('category/<int:id>/<slug:slug>', views.category_books, name='category_books'),
+    path('book/<int:id>/<slug:slug>/', views.book_detail, name='book_detail'),
+    path("hakkimizda", views.hakkimizda, name="hakkimizda"),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

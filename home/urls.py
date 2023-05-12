@@ -5,5 +5,5 @@ urlpatterns = [
     # ex: /home/ 
     path("", views.index, name="index"), 
     path("home", views.index, name="index"),
-    
+    path("iletisim/", views.iletisim, name="iletisim"),
 ]
