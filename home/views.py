@@ -1,9 +1,14 @@
+import json
+
+from django.contrib.auth import authenticate
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
 from book.models import Category, Books, Resimler, Yorumlar
+from home.forms import AramaFormu
 from home.models import IletisimFormu, IletisimMesaji, SayfaAyarlari
+from order.models import AlisverisSepeti
 
 # Create your views here.
 
@@ -14,14 +19,16 @@ def index(request):
     latestbooks =Books.objects.all().order_by('-id')[:8]  # 8 tane kitap sececek.
     booksforyou = Books.objects.all().order_by('?')[:8]   #rastgele 8 kitap sececek.
     categorybooks=Category.objects.all().order_by('?')[:8] 
-    
+    current_user = request.user  # kullanıcının session bilgileri alınıyor.
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
     context ={'setting':sayfaayarlari,
               'page':'home',
               'sliderdata':sliderdata,
               'category':category,
               'latestbooks':latestbooks,
               'booksforyou':booksforyou,
-              'categorybooks':categorybooks
+              'categorybooks':categorybooks,
+              'alisverissepeti':alisverissepeti
               
               
              }
@@ -32,7 +39,11 @@ def index(request):
 def hakkimizda(request):
     sayfaayarlari = SayfaAyarlari.objects.get(pk=1)#sayfaayarlari kısmında pk kaç ise..
     category=Category.objects.all()
-    context ={'setting':sayfaayarlari,'page':'hakkimizda','category':category}
+    current_user = request.user  # kullanıcının session bilgileri alınıyor.
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
+    context ={'setting':sayfaayarlari,'page':'hakkimizda','category':category,
+              'alisverissepeti':alisverissepeti,
+              }
     return render (request,'hakkimizda.html',context)
 
 def iletisim(request):
@@ -54,7 +65,10 @@ def iletisim(request):
     sayfaayarlari = SayfaAyarlari.objects.get(pk=1) #sayfaayarlari kısmında pk kaç ise..
     form = IletisimFormu
     category =Category.objects.all()#iletsim sayfasında hata almamak için category de gönderilmeli!
-    context={'setting':sayfaayarlari,'form':form ,'category':category }
+    current_user = request.user  # kullanıcının session bilgileri alınıyor.
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
+    context={'setting':sayfaayarlari,'form':form ,'category':category,
+            'alisverissepeti':alisverissepeti }
     return render(request, 'iletisim.html', context)
  
 def category_books(request,id,slug):
@@ -75,3 +89,43 @@ def book_detail(request,id,slug):
                
                }
      return render(request, 'book_detail.html', context)
+
+
+def book_search(request):
+    if request.method == 'POST': # check if form method is post or not
+        form = AramaFormu(request.POST)
+        if form.is_valid():
+            query = form.cleaned_data['query'] # get form input data from form
+            #catid = form.cleaned_data['catid']
+            
+            books=Books.objects.filter(title__icontains=query)  #SELECT * FROM product WHERE title LIKE '%query%'
+            
+               
+
+            category = Category.objects.all()
+            context = {'books': books, 'query':query,
+                       'category': category }
+            return render(request, 'search_books.html', context)
+
+    return HttpResponseRedirect('/')
+
+
+def book_search_automatic(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        book = Books.objects.filter(title__icontains=q)
+
+        results = []
+        for rs in book:
+            book_json = {}
+            book_json = rs.title +" > " + rs.category.title
+            results.append(book_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+
+
+

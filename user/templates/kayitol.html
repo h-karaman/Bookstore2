@@ -1,0 +1,93 @@
+{% extends 'homebase.html' %}
+{% load i18n %}
+{% block title %} Sign Up {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+
+{% block content %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
+                    <span class="breadcrumb-item active">Kullanıcı Kayıt Sayfası</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- section -->
+    <div class="body-content">
+       <div>
+            
+            <section class="vh-100">
+                <div class="container-fluid h-custom">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                        class="img-fluid" alt="Sample image">
+                    </div>
+                    
+                    <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                        
+                    <form action="" method="post">
+                        <div container>
+                            {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{message.tags}}" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %} 
+               
+                        </div>
+
+                        
+                            {% csrf_token %}
+
+                            {% for alanlar in form %}
+                            <div>
+                                {{alanlar.label_tag}}<br>
+                                {{ alanlar }}
+
+                                {% if alanlar.help_text %}
+                                <small style="color: grey">{{alanlar.help_text}} </small>
+                                {% endif %}
+
+                                {% for error in alanlar.errors %}
+                                <p style="color:red">{{error}} </p>
+                                {%  endfor %}
+
+                            </div>
+                            {%  endfor %}
+    
+                            <div class="text-center text-lg-start mt-4 pt-2">
+                            <button input type="submit" class="btn btn-primary btn-md"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;"> KAYIT OL</button>
+                            
+                            </div>
+                    
+            
+                        </form>
+                    
+                    </div>
+                </div>
+                </div>
+                    
+            </section>
+        </div> 
+    </div>
+
+	<!-- /section -->
+
+   
+{% endblock %}
+
+
+
+

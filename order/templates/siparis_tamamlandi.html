@@ -1,0 +1,55 @@
+{% extends 'homebase.html' %}
+
+{% block title %} Spariş Tamamlandı{% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block content %}
+ <!-- Breadcrumb Start -->
+ <div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
+                <a class="breadcrumb-item text-dark" href="#">Alışveriş</a>
+                <span class="breadcrumb-item active">Alışveriş Sepeti</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="order-summary clearfix">
+                        <div class="section-title">
+                            <h3 class="title">Sipariş Başarılı Şekilde Alındı</h3>
+                        </div>
+                        <hr>
+                        <h2>Değerli Müşterimiz  "{{ user.first_name }} {{  user.last_name }}"</h2>
+                        <hr>
+                        <h3>Siparişiniz Tamamlanmıştır.</h3>
+                        <h3>Sipariş Kodunuz : {{siparis_kodu}}</h3>
+                        <h3>Teşekkür Ederiz.</h3>
+                        <hr>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock %}

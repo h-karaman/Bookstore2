@@ -1,6 +1,8 @@
 from django.db import models
 from ckeditor_uploader.fields import  RichTextUploadingField
 from django.forms import ModelForm, TextInput, Textarea
+from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 # Create your models here.
 
 # Sayfa ayarları için örnek model olşturulur.
@@ -74,3 +76,6 @@ class IletisimFormu(ModelForm):
             'konu' : TextInput(attrs={'class': 'input','placeholder':'Konu','required':True}),
             'mesaj' : Textarea(attrs={'class': 'input','placeholder':'Mesajınız','rows':'7'}),
         }
+
+
+    

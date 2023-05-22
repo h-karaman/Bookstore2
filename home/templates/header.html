@@ -4,8 +4,8 @@
     <div class="row bg-secondary py-1 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
-                <a class="text-body mr-3" href="hakkimizda">Hakkımızda</a>
-                <a class="text-body mr-3" href="iletisim">İletişim</a>
+                <a class="text-body mr-3" href="/hakkimizda">Hakkımızda</a>
+                <a class="text-body mr-3" href="/iletisim">İletişim</a>
                 <a class="text-body mr-3" href="">Yardım</a>
                 <a class="text-body mr-3" href="">FAQs</a>
             </div>
@@ -13,11 +13,37 @@
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
                 <div class="btn-group">
+                    
                     <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Hesabım</button>
+                    
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" type="button">Giriş Yap</button>
-                        <button class="dropdown-item" type="button">Kayıt Ol</button>
+                        {% if user.id is not None %}   
+                        <button class="dropdown-item" type="button">{{user.first_name}}</button>
+                        <a href="/user/">
+                            <button class="dropdown-item" type="button">Hesap Bilgilerim</button>
+                         </a>
+                         <a href="">
+                            <button class="dropdown-item" type="button">İstek Listem</button>
+                         </a>
+                         <a href="">
+                            <button class="dropdown-item" type="button">Siparişlerim</button>
+                         </a>
+                         <a href="">
+                            <button class="dropdown-item" type="button">Yorumlarım</button>
+                         </a>
+                         <a href="/logout">
+                            <button class="dropdown-item" type="button">Çıkış Yap</button>
+                         </a>
+                        {% else %}
+                        <a href="/login">
+                           <button class="dropdown-item" type="button">Giriş Yap</button>
+                        </a>
+                        <a href="/kayitol">
+                           <button class="dropdown-item" type="button">Kayıt Ol</button>
+                        </a>
+                        {% endif %}
                     </div>
+                    
                 </div>
                 <div class="btn-group mx-2">
                     <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
@@ -55,10 +81,28 @@
                 <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Store</span>
             </a>
         </div>
+
         <div class="col-lg-4 col-6 text-left">
-            <form action="">
+            
+            <script>
+                $(function() {
+                    $("#query").autocomplete({
+                        source: "/book_search_automatic/",
+                        select: function (event, ui) { //item selected
+                            AutoCompleteSelectHandler(event, ui)
+                        },
+                        minLength: 2,
+                    });
+                });
+                function AutoCompleteSelectHandler(event, ui)
+                {
+                    var selectedObj = ui.item;
+                }
+            </script>
+            <form action="/search/" method ="post">
+                {% csrf_token %}
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Aradığınız kitabın ismini yazın">
+                    <input name="query" id="query" type="text" class="form-control" placeholder="Aradığınız kitabın ismini yazın">
                     <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
@@ -74,3 +118,4 @@
     </div>
 </div>
 <!-- Topbar End -->
+

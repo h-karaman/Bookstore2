@@ -47,14 +47,14 @@
                 <div class="product-img position-relative overflow-hidden">
                     <img class="img-fluid w-100" src="{{ rs.image.url }}" alt="" style="height: 350px">
                     <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href="/order/addtoshopcart/{{ rs.id }}"><i class="fa fa-shopping-cart"></i></a>
+                        <a class="btn btn-outline-dark btn-square" href="/order/sepeteekle/{{ rs.id }}"><i class="fa fa-shopping-cart"></i></a>
                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-heart"></i></a>
                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
                     </div>
                 </div>
                 <div class="text-center py-4">
-                    <a class="h6 text-decoration-none text-truncate" href="">{{rs.name}}</a>
+                    <a class="h6 text-decoration-none text-truncate" href="/book/{{rs.id}}/{{rs.slug}}">{{rs.name}}</a>
                     <div class="d-flex align-items-center justify-content-center mt-2">
                         <h5>{{rs.price}} TL</h5>
                     </div>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="text-center py-4">
-                    <a class="h6 text-decoration-none " href="">{{rs.name}}</a>
+                    <a class="h6 text-decoration-none " href="/book/{{rs.id}}/{{rs.slug}}">{{rs.name}}</a>
                     <div class="d-flex align-items-center justify-content-center mt-2">
                         <h5>{{rs.price}} TL</h5>
                     </div>

@@ -12,7 +12,7 @@
             <nav class="breadcrumb bg-light mb-30">
                 <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
                 <a class="breadcrumb-item text-dark" href="">Shop</a>
-                <span class="breadcrumb-item active">Shop Detail</span>
+                <span class="breadcrumb-item active">Kitap Detayı</span>
             </nav>
         </div>
     </div>
@@ -63,34 +63,36 @@
                         <small class="fas fa-star-half-alt"></small>
                         <small class="far fa-star"></small>
                     </div>
-                    <small class="pt-1">(99 Reviews)</small>
+                    <small class="pt-1">xxx({{rs.countreview}} Yorum)</small>
                 </div>
                 <h3 class="font-weight-semi-bold mb-4">{{rs.price}} TL</h3>
                 <p class="mb-4">{{rs.description}}</p>
+                <p  class="mb-4"><strong>Yazar :</strong> {{rs.author}}</p>
+                <p class="mb-4"><strong>Çevirmen:</strong> {{rs.translated_by}}</p>
                 <div class="d-flex mb-3">
                     
                 </div>
+            {% endfor %}
+                {% for rs in book %}
+                <form action="/order/sepeteekle/{{rs.id}}"  method="post"  id="form">
+                    {% csrf_token %}
+                    <!--<input type="number" name="urun_adedi" id="urun_adedi" -->
+                    <div id="SelectedProduct">
+                        <p><strong>Stok Durumu:</strong> {% if rs.quantity > 0  %} Stokta Var {% else %} Stokta Yok {% endif %}</p>
                 
-                <div class="d-flex align-items-center mb-4 pt-2">
-                    <div class="input-group quantity mr-3" style="width: 130px;">
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary btn-minus">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                        <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary btn-plus">
-                                <i class="fa fa-plus "></i>
+                        <div class="qty-input">
+                            <span class="text">Adet: </span>
+                            <input  class="input" style="width: 130px; height: 30px" name="urun_adedi" type="number" id="urun_adedi" value="1" min="1" max="{{ rs.quantity }}">
+                            <button class="btn btn-primary px-3" type="submit" {% if rs.quantity < 1 %} disabled {% endif %} class="primary-btn add-to-cart">
+                                <i class="fa fa-shopping-cart mr-1" style="width:30px;height:10px"></i> Sepete Ekle
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Sepete
-                        Ekle</button>
-                </div>
-                
+                </form>
+             
             </div>
-            {% endfor %}
+            
+               {% endfor %}
         </div>
     </div>
     {% for rs in book %}
@@ -180,7 +182,7 @@
                                     {% if user.id is not None %}
                                         <button class="primary-btn">Yorumu Gönder</button>
                                     {% else %}
-                                        Yorum yapmak için giriş yapın.
+                                        Yorum yapmak için<a href="/login"> GİRİŞ</a> yapın.
                                     {% endif %}
                                 </form>
                             </div>

@@ -1,34 +1,32 @@
 {% extends 'homebase.html' %}
+{% load i18n %}
 {% load static %}
+{% block title %} Kitap Arama {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
 
 
-{% block title %}{{ catdata.title }} Products{% endblock %}
-{% block description %} {{ catdata.description }} {% endblock %}
-{% block keywords %} {{ category.keywords }} {% endblock %}
-
-
+{% block header %} {% include 'header.html' %} {% endblock %}
 {% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
-{% block content %} {% include 'shop.html' %} {% endblock %}
-{% block body %}
 
- 
-<!-- Breadcrumb Start -->
-<div class="container-fluid">
-    <div class="row px-xl-5">
-        <div class="col-12">
-            <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Home</a>
-                <a class="breadcrumb-item text-dark" href="#">Shop</a>
-                <span class="breadcrumb-item active">Shop List</span>
-            </nav>
+
+
+{% block content %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
+                    <span class="breadcrumb-item active">Kitap Ara</span>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
-<!-- Breadcrumb End -->
+    <!-- Breadcrumb End -->
 
-
-<!-- Shop Start -->
-<div class="container-fluid">
+  <!-- Shop Start -->
+  <div class="container-fluid">
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3 col-md-4">
@@ -151,7 +149,6 @@
 
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-8">
-            {% for rs in books %}
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
@@ -179,11 +176,11 @@
                         </div>
                     </div>
                 </div>
-                
+                {% for rs in books %}
                 <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                     <div class="product-item bg-light mb-4">
                         <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="{{rs.image.url}}" alt="">
+                            <img class="img-fluid w-100" src="{{rs.image.url}}" alt="" width="50" height="60" >
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
@@ -192,9 +189,9 @@
                             </div>
                         </div>
                         <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="/book/{{rs.id}}/{{rs.slug}}">{{rs.name}}</a>
+                            <a class="h6 text-decoration-none" href="/book/{{ rs.id }}/{{ rs.slug }}">{{rs.name}}</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>{{rs.price}} TL</h5><h6 class="text-muted ml-2"><del>{{rs.price}} TL</del></h6>
+                                <h5>{{rs.price}} TL</h5><h6 ></h6>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
@@ -207,8 +204,7 @@
                         </div>
                     </div>
                 </div>
-                {%endfor %}
-  
+                {% endfor %}
                 <div class="col-12">
                     <nav>
                       <ul class="pagination justify-content-center">
@@ -226,4 +222,8 @@
     </div>
 </div>
 <!-- Shop End -->
- {% endblock %}
+{% endblock %}
+
+
+
+

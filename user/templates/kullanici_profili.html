@@ -1,0 +1,84 @@
+{% extends 'homebase.html' %}
+
+{% block title %}  {{ user.first_name }}-Profile {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
+                    <span class="breadcrumb-item active">Kullanıcı Profili</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+  <!-- Breadcrumb End -->
+    <!-- section -->
+    <div class="section">
+            <!-- container -->
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+
+                    <div class="col-md-3">
+                        {% include "kullanici_paneli.html" %}
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h3 class="title">Kullanıcı Bilgileri</h3>
+                            </div>
+                        </div>
+                        <table class="shopping-cart-table table">
+                            <tr>
+                                <th class="text-left">
+                                    <a href="/user/guncelle" class="primary-btn">Profili Güncelle</a><br>
+                                    <a href="/user/parola" class="primary-btn">Parola Değiştir</a>
+                                </th>
+                                <td><img src="{{ kullaniciprofili.image.url }}" style="border-radius: 45px; height: 200px "></td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Ad Soyad :</th>
+                                <td class="text-left">{{ user.first_name}} {{ user.last_name}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">E-mail :</th>
+                                <td class="text-left">{{ kullaniciprofili.user.email}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Telefon :</th>
+                                <td class="text-left">{{ kullaniciprofili.telefon}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Adres :</th>
+                                <td class="text-left">{{ kullaniciprofili.adres}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Şehir :</th>
+                                <td class="text-left">{{ kullaniciprofili.sehir}}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Ülke :</th>
+                                <td class="text-left">{{ kullaniciprofili.ulke}}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock %}
