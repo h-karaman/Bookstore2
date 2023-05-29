@@ -11,5 +11,8 @@ urlpatterns = [
     path('sepeti_guncelle_artir/<int:id>', views.sepeti_guncelle_artir, name='sepeti_guncelle_artir'),
     path('sepeti_guncelle_azalt/<int:id>', views.sepeti_guncelle_azalt, name='sepeti_guncelle_azalt'),
     path('sepetiguncelle/<int:id>', views.sepetiguncelle, name='sepetiguncelle'),
+    path('favorilereekle/<int:id>', views.favorilereekle, name='favorilereekle'),
+    path('favorisepeti/', views.favorilerim, name='favorilerim'),
+    path('favorisepetindencikar/<int:id>', views.favorisepetindencikar, name='favorisepetindencikar'),
     
              ]

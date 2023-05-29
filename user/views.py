@@ -1,6 +1,8 @@
 from django.http import HttpResponse,HttpResponseRedirect
-from book.models import Category
+from book.models import Books, Category, Yorumlar
 from django.shortcuts import render
+from home.models import SayfaAyarlari
+from order.models import AlisverisSepeti, FavoriSepeti, Siparis, SiparisUrunu
 from user.forms import KullaniciGuncellemeFormu, KullaniciKayitFormu, ProfilGuncellemeFormu
 from user.models import KullaniciProfili
 from django.contrib.auth.models import User 
@@ -21,9 +23,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 def index(request):
     category=Category.objects.all()
     current_user=request.user
+    sayfaayarlari = SayfaAyarlari.objects.get(pk=1)#sayfaayarlari kısmında pk kaç ise..
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)#ana sayfada alışveriş sepeti
+    favorisepeti = FavoriSepeti.objects.filter(user_id=current_user.id)#ana sayfada favori sepeti
     #şu an login olan kullanıcının id'sini almak için..
     kullaniciprofili=KullaniciProfili.objects.get(user_id=current_user.id)
-    context ={'category':category,'kullaniciprofili':kullaniciprofili}
+    context ={'category':category,'kullaniciprofili':kullaniciprofili,
+           'sayfaayarlari':sayfaayarlari,'alisverissepeti':alisverissepeti,'favorisepeti': favorisepeti ,
+           }
     return render (request,'kullanici_profili.html',context)
 
 
@@ -119,4 +126,50 @@ def kullanici_parola_guncelle(request):
         form = PasswordChangeForm(request.user)
         return render(request, 'kullanici_parola_guncelle.html', {'form': form,'category': category
                        })
-     
+        
+        
+@login_required(login_url='/login') #kullanıcı girişi kontrol ediliyor.
+def kullanici_siparisleri(request):
+    category = Category.objects.all()
+    current_user = request.user
+    siparisler=Siparis.objects.filter(user_id=current_user.id)
+    context = {'category': category,
+               'siparisler': siparisler,
+               }
+    return render(request, 'kullanici_siparisleri.html', context)   
+
+
+@login_required(login_url='/login') # Check login
+def kullanici_siparis_urunleri_detayi(request,id):
+    category = Category.objects.all()
+    current_user = request.user
+    siparis = Siparis.objects.get(user_id=current_user.id,id=id)
+    siparisurunleri = SiparisUrunu.objects.filter(siparis_id=id)
+    context = {
+        'category': category,
+        'siparis': siparis,
+        'siparisurunleri': siparisurunleri,
+    }
+    #return HttpResponse(context) 
+    return render(request, 'kullanici_siparisleri_detayi.html', context)
+
+
+@login_required(login_url='/login') # Check login
+def kullanici_yorumlari(request):
+    category = Category.objects.all()
+    current_user = request.user
+    yorum = Yorumlar.objects.filter(user_id=current_user.id)
+    #book=Books.objects.all()
+    context = {
+        'category': category,
+        'yorum': yorum,
+        #'book':book,
+    }
+    return render(request, 'kullanici_yorumlari.html', context)
+
+@login_required(login_url='/login') # Check login
+def yorum_sil(request,id):
+   current_user = request.user
+   Yorumlar.objects.filter(id=id, user_id=current_user.id).delete()
+   messages.success(request, 'Yorum silindi.')
+   return HttpResponseRedirect('/user/yorumlar')

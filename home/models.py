@@ -77,5 +77,20 @@ class IletisimFormu(ModelForm):
             'mesaj' : Textarea(attrs={'class': 'input','placeholder':'Mesajınız','rows':'7'}),
         }
 
+class FAQ(models.Model):
+    STATUS = (
+        ('True', 'Yayınla'),
+        ('False', 'Yayınlama'),
+    )
+   
+    soru = models.CharField(max_length=200)
+    cevap = RichTextUploadingField()
+    durum=models.CharField(max_length=10, choices=STATUS)
+    olusturulma_zamani=models.DateTimeField(auto_now_add=True)
+    guncellenme_zamani=models.DateTimeField(auto_now=True)
+    ordernumber = models.IntegerField()
+
+    def __str__(self):
+        return self.soru
 
     

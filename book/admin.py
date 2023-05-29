@@ -1,7 +1,7 @@
 from django.contrib import admin
 from book import models
 from mptt.admin import DraggableMPTTAdmin
-from book.models import Category, Books, Resimler, Yorumlar
+from book.models import Category, Books, Resimler, Slider, Yorumlar
 
 class CategoryAdmin2(DraggableMPTTAdmin):
     mptt_indent_field = "title"
@@ -65,7 +65,9 @@ class ResimlerAdmin(admin.ModelAdmin):
     readonly_fields = ('image_tag',)
     
     
-    
+class SliderAdmin(admin.ModelAdmin):
+    list_display = ['books','baslik','image_tag']
+    readonly_fields = ('image_tag',)
 
     
 # Register your models here.
@@ -73,3 +75,4 @@ admin.site.register(Category,CategoryAdmin2)
 admin.site.register(Books,BooksAdmin)
 admin.site.register(Resimler,ResimlerAdmin)
 admin.site.register(Yorumlar,YorumlarAdmin)
+admin.site.register(Slider,SliderAdmin)

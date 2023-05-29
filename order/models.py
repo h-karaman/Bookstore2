@@ -1,12 +1,12 @@
 
 from django.contrib.auth.models import User
 from django.db import models
-
-# Create your models here.
 from django.forms import ModelForm
-
 from book.models import Books
 
+
+
+# Create your models here.
 
 class AlisverisSepeti(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -84,3 +84,14 @@ class SiparisUrunu(models.Model):
         
     def __str__(self):
         return str(self.book)
+    
+class FavoriSepeti(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    book = models.ForeignKey(Books, on_delete=models.SET_NULL, null=True)
+    #urun_adedi = models.IntegerField()
+    
+    def __str__(self):
+        return str(self.book)#parantezi ve str yi unutma.yoksa 'str' hatası vercek.return self.book yazma.
+    #self.book.title ya da .name yapınca hata veriyor.
+    
+    

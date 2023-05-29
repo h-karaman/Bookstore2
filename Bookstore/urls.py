@@ -50,7 +50,7 @@ urlpatterns = [
     path('sepeteekle/<int:id>', OrderViews.sepeteekle, name='sepeteekle'),
     path('sepetiguncelle/<int:id>', OrderViews.sepetiguncelle, name='sepetiguncelle'),
     path('sepeti_guncelle_artir/<int:id>', OrderViews.sepeti_guncelle_artir, name='sepeti_guncelle_artir'),
-    
+    path('faq/', views.faq, name='faq'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

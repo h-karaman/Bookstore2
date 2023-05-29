@@ -2,15 +2,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-
-# Create your views here.
 from django.utils.crypto import get_random_string
-
-
-from order.models import AlisverisSepeti, AlisverisSepetiFormu, SiparisFormu, Siparis,SiparisUrunu
+from home.models import SayfaAyarlari
+from order.models import AlisverisSepeti, AlisverisSepetiFormu, FavoriSepeti, SiparisFormu, Siparis,SiparisUrunu
 from book.models import Category, Books
 from user.models import KullaniciProfili
 
+
+# Create your views here.
 
 def index(request):
     return HttpResponse ("Siparis Sayfası")
@@ -70,6 +69,8 @@ def alisverissepeti(request):
     category = Category.objects.all()
     current_user = request.user  # kullanıcının session bilgileri alınıyor.
     alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
+    favorisepeti = FavoriSepeti.objects.filter(user_id=current_user.id)
+    sayfaayarlari = SayfaAyarlari.objects.get(pk=1)
     alisveris_tutari=0
     for rs in alisverissepeti:
         alisveris_tutari += rs.book.price * rs.urun_adedi
@@ -78,6 +79,7 @@ def alisverissepeti(request):
     context={'alisverissepeti': alisverissepeti,
              'category':category,
              'alisveris_tutari': alisveris_tutari,
+             'favorisepeti':favorisepeti,'sayfaayarlari':sayfaayarlari,
              }
     return render(request,'alisverissepeti_urunleri.html',context)
 
@@ -129,7 +131,8 @@ def siparisurunu(request):
     category = Category.objects.all()
     current_user = request.user
     alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
-    
+    favorisepeti=FavoriSepeti.objects.filter(user_id=current_user.id)
+    sayfaayarlari = SayfaAyarlari.objects.get(pk=1)
     alisveris_tutari = 0
     for rs in alisverissepeti:
         
@@ -174,7 +177,9 @@ def siparisurunu(request):
             AlisverisSepeti.objects.filter(user_id=current_user.id).delete() # Clear & Delete shopcart
             request.session['cart_items']=0
             messages.success(request, "Siparişiniz tamamlandı. ")
-            return render(request, 'siparis_tamamlandi.html',{'siparis_kodu':siparis_kodu,'category': category})
+            return render(request, 'siparis_tamamlandi.html',{'siparis_kodu':siparis_kodu,'category': category,
+             'alisveris_tutari': alisveris_tutari,
+                    'sayfaayarlari':sayfaayarlari,  })
         else:
             messages.warning(request, form.errors)
             return HttpResponseRedirect("/order/siparisurunu")
@@ -185,7 +190,7 @@ def siparisurunu(request):
                'category': category,
                'alisveris_tutari': alisveris_tutari,
                'form': form,
-               'kullanici_profili': kullanici_profili,
+               'kullanici_profili': kullanici_profili,'favorisepeti':favorisepeti,'sayfaayarlari':sayfaayarlari,
                }
     return render(request, 'siparis_formu2.html', context)
 
@@ -210,4 +215,45 @@ def sepetiguncelle(request,id):
         
         return HttpResponseRedirect(sonurl)
 
+@login_required(login_url='/login')
+def favorilereekle(request,id):
+    sonurl = request.META.get('HTTP_REFERER')  # get last url
+    current_user = request.user  # Kullanıcının session bilgilerlini alıyoruz.
+    #book= Books.objects.get(pk=id)
+
     
+    
+    urun_sepette_mi = FavoriSepeti.objects.filter(book_id=id, user_id=current_user.id) # Check product in shopcart
+    if urun_sepette_mi:
+            sepette = 1 # Ürün alışveriş sepetinde var demektir.
+    else:
+            sepette = 0 # Ürün alışveriş sepetinde yok demektir.
+    if sepette == 1:  # ürün zaten favori sepetinde,en son adrese geri gönder.
+            return HttpResponseRedirect(sonurl)
+            
+            #
+    else:  #  Ürün sepete eklenecek(ürün sepette yoksa)
+            data = FavoriSepeti()  # model ile bağlantı kurulacak.
+            data.user_id = current_user.id
+            data.book_id = id
+            data.urun_adedi = 1# bir adet ürün sepete eklenecek.ana sayfadan 1 tane ekleme şansımız var.
+            
+            data.save()  #veriler kaydediliyor.
+    messages.success(request, "Ürün alışveriş sepetine eklendi.")
+    return HttpResponseRedirect(sonurl) #en son ürün  ekleme yaptığımız url e dönüyor
+
+def favorilerim(request):
+    category = Category.objects.all()
+    current_user = request.user  # kullanıcının session bilgileri alınıyor.
+    favorisepeti = FavoriSepeti.objects.filter(user_id=current_user.id)
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
+    context={'favorisepeti': favorisepeti,
+             'category':category,
+             'alisverissepeti':alisverissepeti
+             }
+    return render(request,'favori_urunler.html',context)
+
+def favorisepetindencikar(request,id):
+    FavoriSepeti.objects.filter(id=id).delete()
+    messages.success(request, "Ürün sepetten çıkartıldı.")
+    return HttpResponseRedirect("/order/favorisepeti")

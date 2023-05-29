@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from home.models import IletisimMesaji,SayfaAyarlari
+from home.models import IletisimMesaji,SayfaAyarlari,FAQ
 
 # Register your models here.
 class IletisimMesajiAdmin(admin.ModelAdmin):
@@ -9,10 +9,14 @@ class IletisimMesajiAdmin(admin.ModelAdmin):
     list_filter = ['durum']
 
 
-    
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ['soru', 'cevap','ordernumber','durum']
+    list_filter = ['durum']   
     
     
 
 
 admin.site.register(SayfaAyarlari)
 admin.site.register(IletisimMesaji,IletisimMesajiAdmin)
+admin.site.register(FAQ,FAQAdmin)
+

@@ -1,0 +1,62 @@
+{% extends 'homebase.html' %}
+
+{% block title %}{{ sayfaayarlari.title}}-Sıkça Sorulan Sorular{% endblock %}
+{% block description %} {{ sayfaayarlari.description }} {% endblock %}
+{% block keywords %} {{ sayfaayarlari.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+<!--
+    burada  script için {% block hea.d %}  {% endblock %} kullanırsan başlıkta simge gelmez.
+    bir tane head var ..bak. block tam ismini yazarsan gene gelmiyor.o yüzden hea.d şeklinde
+    yazdım.
+-->
+
+<script>
+    $( "#accordion" ).accordion();
+    </script>
+
+
+
+{% block content %}
+   <!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/">Home</a>
+                
+                <span class="breadcrumb-item active">Sıkça Sorulan Sorular</span>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+<head>
+  <meta charset="utf-8">
+  <title>accordion demo</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+ 
+    <div id="accordion">
+        {% for rs in faq %}
+        <h3>{{rs.soru}}</h3>
+        <div>
+            <p>{{rs.cevap|safe}}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+    
+<script>
+$( "#accordion" ).accordion();
+</script>
+</div>
+ 
+
+
+{% endblock %}

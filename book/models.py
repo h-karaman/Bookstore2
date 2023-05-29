@@ -87,6 +87,7 @@ class Books(models.Model):
     translated_by=models.CharField(blank=True,max_length=50)
     availability =models.BooleanField(default=True)
     image=models.ImageField(upload_to='images/',null=False)
+    sliderimage=models.ImageField(upload_to='images/',null=False)
     #cover_image =models.ImageField(upload_to='images/',null=False)
     
     def __str__(self):
@@ -95,6 +96,30 @@ class Books(models.Model):
     def image_tag(self):
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Resim'
+    
+    def image_tag1(self):
+        return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
+    image_tag1.short_description = 'SliderResim'
+    
+    def __str__(self):
+        return str (self.id)
+    
+    def avaregereview(self):
+        reviews = Yorumlar.objects.filter(books=self, durum='True').aggregate(avarage=Avg('yorum_puani'))
+        avg=0
+        if reviews["avarage"] is not None:
+            avg=float(reviews["avarage"])
+        return avg
+
+    def countreview(self):
+        reviews = Yorumlar.objects.filter(books=self, durum='True').aggregate(count=Count('id'))
+        cnt=0
+        if reviews["count"] is not None:
+            cnt = int(reviews["count"])
+        return cnt
+    
+    
+    
     
 class Resimler(models.Model) :
     books= models.ForeignKey(Books,on_delete=models.CASCADE)
@@ -109,7 +134,7 @@ class Resimler(models.Model) :
         return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
     image_tag.short_description = 'Resim'
     
-      
+    
     
     
 
@@ -132,8 +157,26 @@ class Yorumlar(models.Model) :
     
     def __str__(self):
         return self.konu
+    def __str__(self):
+        return str (self.id)
+    
+    
     
 class YorumFormu(ModelForm):
     class Meta:
         model = Yorumlar
-        fields = ['konu', 'yorum', 'yorum_puani']      
+        fields = ['konu', 'yorum', 'yorum_puani']  
+       
+       
+class Slider(models.Model) :
+    books= models.ForeignKey(Books,on_delete=models.CASCADE)
+    baslik = models.CharField(max_length=100,blank=True)  
+    # resim = models.ImageField(blank=True,upload_to='images/')
+    image=models.ImageField(blank=True,upload_to='images/slider/',null=True)
+    
+    def __str__(self):
+        return self.baslik
+    
+    def image_tag(self):
+        return mark_safe('<img src="{}" height="50"/>'.format(self.image.url))
+    image_tag.short_description = 'SliderResim'

@@ -1,0 +1,66 @@
+   
+   {% extends 'homebase.html' %}
+   {% load i18n %}
+   {% block title %}Kullanıcı Yorumları {{ sayfaayarlari.title }} {% endblock %}
+   {% block description %} {{ sayfaayarlari.description }} {% endblock %}
+   {% block keywords %} {{ sayfaayarlari.keywords }} {% endblock %}
+   
+   {% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+   {% block content %}
+   <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
+                    <a class="breadcrumb-item text-dark" href="#">Kullanıcı Profili</a>
+                    <span class="breadcrumb-item active">Kullanıcı Yorumları</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Cart Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-12 table-responsive mb-5">
+                <table class="table table-light table-borderless table-hover text-center mb-0">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Kitap</th>
+                            <th>Yorum Puanı</th>
+                            <th>Konu </th>
+                            <th>Yorum</th>
+                            <th>Durum </th>
+                            <th>Oluşturulma Zamanı</th>
+                            <th>Yorumu Sil</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        {% for rs  in yorum %}
+                        <tr>
+                          
+                            <td class="align-middle"><a href="/book/{{rs.books.id}}/{{rs.books.slug }}">{{rs.books.name}}</a> </td>
+                            <td class="align-middle">{{rs.yorum_puani}} </td>
+                            <td class="align-middle">{{rs.konu}} </td>
+                            <td class="align-middle">{{rs.yorum}} TL</td>
+                            <td class="align-middle">{{rs.durum}} </td>
+                            <td class="align-middle">{{rs.olusturulma_zamani}} TL</td>
+                        
+                            <!--<td class="text-left"><a class="primary-btn" href="/user/alisverisdetayi/{{ rs.id }}">Sipariş Detayı </a></td>-->
+                            <td class="align-middle"> <a href="/user/yorumsil/{{ rs.id }}" onclick="return confirm('Ürün sepetten silinecek!')"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></a></td>
+                        </tr>
+                        {% endfor %}
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <!-- Cart End -->
+    {% endblock  %}
