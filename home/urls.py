@@ -8,4 +8,5 @@ urlpatterns = [
     path("iletisim/", views.iletisim, name="iletisim"),
     path("referanslar/", views.referanslar, name="referanslar"),
     
+    
 ]

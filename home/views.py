@@ -10,6 +10,8 @@ from home.forms import AramaFormu
 from home.models import FAQ, IletisimFormu, IletisimMesaji, SayfaAyarlari
 from order.models import AlisverisSepeti, FavoriSepeti
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import TemplateView, ListView
+from django.db.models import Q # new
 
 # Create your views here.
 
@@ -177,6 +179,7 @@ def book_search_automatic(request):
 
 
 
+
 def faq(request):
     faq = FAQ.objects.filter(durum="True").order_by("ordernumber")
     sayfaayarlari = SayfaAyarlari.objects.get(pk=1)#sayfaayarlari kısmında pk kaç ise..
@@ -200,3 +203,4 @@ def referanslar(request):
               'favorisepeti':favorisepeti,
               }
     return render (request,'referanslar.html',context)
+
