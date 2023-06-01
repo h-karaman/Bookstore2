@@ -133,8 +133,14 @@ def kullanici_siparisleri(request):
     category = Category.objects.all()
     current_user = request.user
     siparisler=Siparis.objects.filter(user_id=current_user.id)
+    sayfaayarlari = SayfaAyarlari.objects.get(pk=1)#sayfaayarlari kısmında pk kaç ise..
+    category=Category.objects.all()
+    
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
+    favorisepeti = FavoriSepeti.objects.filter(user_id=current_user.id)#ana sayfada favori sepeti
     context = {'category': category,
-               'siparisler': siparisler,
+               'siparisler': siparisler,'sayfaayarlari':sayfaayarlari,
+              'alisverissepeti':alisverissepeti,'favorisepeti':favorisepeti,
                }
     return render(request, 'kullanici_siparisleri.html', context)   
 
@@ -159,10 +165,16 @@ def kullanici_yorumlari(request):
     category = Category.objects.all()
     current_user = request.user
     yorum = Yorumlar.objects.filter(user_id=current_user.id)
+    sayfaayarlari = SayfaAyarlari.objects.get(pk=1)#sayfaayarlari kısmında pk kaç ise..
+    category=Category.objects.all()
+    current_user = request.user  # kullanıcının session bilgileri alınıyor.
+    alisverissepeti = AlisverisSepeti.objects.filter(user_id=current_user.id)
+    favorisepeti = FavoriSepeti.objects.filter(user_id=current_user.id)#ana sayfada favori sepeti
     #book=Books.objects.all()
     context = {
         'category': category,
-        'yorum': yorum,
+        'yorum': yorum,'sayfaayarlari':sayfaayarlari,
+              'alisverissepeti':alisverissepeti,'favorisepeti':favorisepeti,
         #'book':book,
     }
     return render(request, 'kullanici_yorumlari.html', context)
